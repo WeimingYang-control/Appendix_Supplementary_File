@@ -1,0 +1,381 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%% OPERATORS %%%%%%%%%%%%%%%%%%%%
+\newcommand{\ms}{\mathsf}
+\newcommand{\bs}{\boldsymbol}
+\newcommand{\trs}{^\ms{T}} % transpose operator
+\newcommand{\sss}[1]{\scriptscriptstyle{#1}}
+%\newcommand{\Skew}[1]{\ensuremath{\mathbf{S}\!\left(#1\right)}}
+
+\newcommand{\LP}{\left(} % Left Parentheses
+\newcommand{\RP}{\right)} % Right Parentheses
+\newcommand{\LSB}{\left[} % Left Parentheses
+\newcommand{\RSB}{\right]} % Right Parentheses
+\newcommand{\LB}{\left\{} % Left Parentheses
+\newcommand{\RB}{\right\}} % Right Parentheses
+\newcommand{\overbar}[1]{\mkern 1.5mu\overline{\mkern-1.5mu#1\mkern-1.5mu}\mkern 1.5mu}
+
+\newcommand{\Skew}[2][]{%
+	\ifthenelse{\equal{#1}{}}{\ensuremath{\mathbf{S}(#2)}}{\ensuremath{\mathbf{S}^{#1}(#2)}}
+} % \Skew[2]{omega}
+
+\newcommand{\clr}{\color{red}}
+\def\v#1{\mathbf{#1}} % to type bold letters easily
+\def\bs#1{\boldsymbol{#1}} % to type bold letters easily
+%\newcommand{\vph}{\vphantom{\frac{1}{1}}} %to adjust the size of parentheses
+
+\newcommand{\diag}[1]{%
+    \ensuremath{\operatorname{diag}(#1)}%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%% VARIABLES %%%%%%%%%%%%%%%%%%%%
+\newcommand{\Tension}{T_{\sss{L}}}
+
+\newcommand{\mQ}{\ensuremath{m_{\sss{Q}}}} % Mass of the quadrotor
+
+\newcommand{\mP}{\ensuremath{m_{\sss{P}}}} % Mass of the pendulum
+
+\newcommand{\mT}{\ensuremath{m_{\sss{T}}}} % Total mass
+
+\newcommand{\ellp}{\ensuremath{\ell}}
+
+\newcommand{\dir}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\mathbf{q}}{\mathbf{q}^{\ms{#1}}}% \dir[T]
+}
+
+\newcommand{\dirdot}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\dot{\mathbf{q}}}{\dot{\mathbf{q}}^{\ms{#1}}}% \dir[T]
+}
+
+\newcommand{\dirddot}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\ddot{\mathbf{q}}}{\ddot{\mathbf{q}}^{\ms{#1}}}% \dirddot[T]
+}
+
+\newcommand{\dirddothat}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\widehat{\ddot{\mathbf{q}}}}{\widehat{\ddot{\mathbf{q}}}^{\ms{#1}}}% \dirddothat[T]
+}
+
+\newcommand{\dird}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\mathbf{q}_d}{\mathbf{q}^{\ms{#1}}_d}% \qd[T]
+}
+
+\newcommand{\qddot}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\dot{\mathbf{q}}_d}{\dot{\mathbf{q}}^{\ms{#1}}_d}% \qddot[T]
+}
+
+\newcommand{\qddothat}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\widehat{\dot{\mathbf{q}}}_d}{\widehat{\dot{\mathbf{q}}}^{\ms{#1}}_d}% \qddothat[T]
+}
+
+\newcommand{\RotM}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\mathbf{R}}{\mathbf{R}^{\ms{#1}}}% \RotM[T]
+}
+
+\newcommand{\RotMdot}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\dot{\mathbf{R}}}{\mathbf{R}^{\ms{#1}}}% \RotM[T]
+}
+
+\newcommand{\pT}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\mathbf{p}_{\sss{T}}}{\mathbf{p}^{\ms{#1}}_{\sss{T}}}% \pL[T]
+}
+
+\newcommand{\vT}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\mathbf{v}_{\sss{T}}}{\mathbf{v}^{\ms{#1}}_{\sss{T}}}% \pL[T]
+}
+
+\newcommand{\pL}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\mathbf{p}_{\sss{\bigstar}}}{\mathbf{p}^{\ms{#1}}_{\sss{\bigstar}}}% \pL[T]
+}
+
+\newcommand{\pLdot}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\dot{\mathbf{p}}_{\sss{\bigstar}}}{\dot{\mathbf{p}}^{\ms{#1}}_{\sss{\bigstar}}}% \pLdot[T]
+}
+
+\newcommand{\pQ}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\mathbf{p}_{\sss{Q}}}{\mathbf{p}^{\ms{#1}}_{\sss{Q}}}% \pQ[T]
+}
+
+\newcommand{\pLd}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\mathbf{p}_d}{\mathbf{p}^{\ms{#1}}_d}% \pLd[T]
+}
+
+\newcommand{\pLddot}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\dot{\mathbf{p}}_d}{\dot{\mathbf{p}}^{\ms{#1}}_d}
+}
+
+\newcommand{\pLdddot}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\ddot{\mathbf{p}}_d}{\ddot{\mathbf{p}}^{\ms{#1}}_d}
+}
+
+\newcommand{\pLdtdot}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\dddot{\mathbf{p}}_d}{\dddot{\mathbf{p}}^{\ms{#1}}_d}
+}
+
+\newcommand{\pLdqdot}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\ddddot{\mathbf{p}}_d}{\ddddot{\mathbf{p}}^{\ms{#1}}_d}
+}
+
+\newcommand{\pdelta}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\v{p}_{\sss{\delta}}}{\v{p}^{\ms{#1}}_{\sss{\delta}}}% \pdelta[T]
+}
+
+\newcommand{\pdeltadot}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\dot{\mathbf{p}}_{\sss{\delta}}}{\dot{\mathbf{p}}^{\ms{#1}}_{\sss{\delta}}}% \vLdot[T]
+}
+
+\newcommand{\vdelta}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\mathbf{v}_{\sss{\delta}}}{\mathbf{v}^{\ms{#1}}_{\sss{\delta}}}% \vL[T]
+}
+
+\newcommand{\vdeltadot}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\dot{\mathbf{v}}_{\sss{\delta}}}{\dot{\mathbf{v}}^{\ms{#1}}_{\sss{\delta}}}% \vL[T]
+}
+
+
+\newcommand{\vL}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\mathbf{v}_{\sss{L}}}{\mathbf{v}^{\ms{#1}}_{\sss{L}}}% \vL[T]
+}
+
+\newcommand{\vLdot}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\dot{\mathbf{v}}_{\sss{L}}}{\dot{\mathbf{v}}^{\ms{#1}}_{\sss{L}}}% \vLdot[T]
+}
+
+\newcommand{\vLdothat}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\widehat{\dot{\mathbf{v}}}_{\sss{L}}}{\widehat{\dot{\mathbf{v}}}^{\ms{#1}}_{\sss{L}}}% \vLdothat[T]
+}
+
+\newcommand{\Xiq}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\boldsymbol{\xi}}{\boldsymbol{\xi}^{\ms{#1}}}% \Xi[T]
+}
+
+\newcommand{\vQ}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\mathbf{v}_{\sss{Q}}}{\mathbf{v}^{\ms{#1}}_{\sss{Q}}}% \vQ[T]
+}
+
+\newcommand{\vQdot}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\dot{\mathbf{v}}_{\sss{Q}}}{\dot{\mathbf{v}}^{\ms{#1}}_{\sss{Q}}}% \vLdot[T]
+}
+
+\newcommand{\wL}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\boldsymbol\omega}{\boldsymbol\omega^{\ms{#1}}}% \wL[T]
+}
+
+\newcommand{\wLd}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\mathbf{\boldsymbol\omega}_d}{\mathbf{\boldsymbol\omega}^{\ms{#1}}_d}% \wLd[T]
+}
+
+\newcommand{\wLdot}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\dot{\bs\omega}}{\dot{\bs\omega}^{\ms{#1}}}% \wLddot[T]
+}
+
+\newcommand{\wLdothat}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\widehat{\dot{\boldsymbol\omega}}}{\widehat{\dot{\bs\omega}}^{\ms{#1}}} % \wLddohatt[T]
+}
+
+\newcommand{\wQ}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\boldsymbol\Omega}{\boldsymbol\Omega^{\ms{#1}}}% \wQ[T]
+}
+
+\newcommand{\ex}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\mathbf{e}_1}{\mathbf{e}^{\ms{#1}}_1}% \ex[T]
+}
+
+\newcommand{\ey}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\mathbf{e}_2}{\mathbf{e}^{\ms{#1}}_2}% \ey[T]
+}
+
+\newcommand{\ez}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\mathbf{e}_3}{\mathbf{e}^{\ms{#1}}_3}% \ez[T]
+}
+
+\newcommand{\dist}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\mathbf{b}}{\mathbf{b}^{\ms{#1}}}% \dist[T]
+}
+
+\newcommand{\f}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\mathbf{f}}{\mathbf{f}^{\ms{#1}}}% \f[T]
+}
+
+\newcommand{\fd}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\mathbf{f}_d}{\mathbf{f}^{\ms{#1}}_d}% \fd[T]
+}
+
+\newcommand{\fddot}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\dot{\mathbf{f}}_d}{\dot{\mathbf{f}}_d^{\ms{#1}}_d}% \fddot[T]
+}
+
+\newcommand{\fddothat}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\widehat{\dot{\mathbf{f}}}_d}{\widehat{\dot{\mathbf{f}}}_d^{\ms{#1}}_d}% \fddothat[T]
+}
+
+\newcommand{\rz}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\mathbf{r}_3}{\mathbf{r}^{\ms{#1}}_3}% \rz[T]
+}
+
+\newcommand{\rzdot}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\dot{\v{r}}_3}{\v{r}^{\ms{#1}}_3}% \rzdot[T]
+}
+
+\newcommand{\rzd}[1][]{%
+	\ifthenelse{\equal{#1}{}}{{\mathbf{r}_3}_d}{{\mathbf{r}_3}_d^{\ms{#1}}}% \rzd[T]
+}
+
+\newcommand{\rzddot}[1][]{%
+	\ifthenelse{\equal{#1}{}}{{{}\dot{\v{r}}_3}_d}{{{}\dot{\v{r}}_3}_d^{\ms{#1}}}% \rzddot[T]
+}
+
+\newcommand{\rzddothat}[1][]{%
+	\ifthenelse{\equal{#1}{}}{{{}\widehat{{{}\dot{\v{r}}_3}_d}}}{{{}\widehat{{{}\dot{\v{r}}_3}_d}^{\ms{#1}}}}% \rzddothat[T]
+}
+% \ifthenelse{\equal{#1}{}}{{{}\widehat{{\dot{\v{r}}_3}_d}}}{{{}\widehat{{\dot{\v{r}}_3}_d}^{\ms{#1}}}}%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%% ERRORS%%%%%%%%%%%%%%%%%%%% 
+\newcommand{\zpdelta}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\v{z}_{p_{\sss{\delta}}}}{\v{z}^{\ms{#1}}_{p_{\sss{\delta}}}}% \zpdelta[T]
+}
+
+\newcommand{\zpdeltadot}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\dot{\v{z}}_{p_{\sss{\delta}}}}{\v{z}^{\ms{#1}}_{p_{\sss{\delta}}}}% \zpdelta[T]
+}
+
+\newcommand{\zvdelta}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\v{z}_{v_{\sss{\delta}}}}{\v{z}^{\ms{#1}}_{v_{\sss{\delta}}}}% \zpdelta[T]
+}
+
+\newcommand{\zvdeltadot}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\dot{\v{z}}_{v_{\sss{\delta}}}}{\dot{\v{z}}^{\ms{#1}}_{v_{\sss{\delta}}}}% \zpdelta[T]
+}
+
+\newcommand{\zp}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\v{z}_p}{\v{z}^{\ms{#1}}_p}% \zp[T]
+}
+
+\newcommand{\zL}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\v{z}_{\sss{L}}}{\v{z}^{\ms{#1}}_{\sss{L}}}% \zL[T]
+}
+
+\newcommand{\zv}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\v{z}_v}{\v{z}^{\ms{#1}}_v}% \zv[T]
+}
+
+\newcommand{\zdir}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\v{z}_q}{\v{z}^{\ms{#1}}_q}% \zq[T]
+}
+
+\newcommand{\zpdot}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\dot{\v{z}}_p}{\v{z}^{\ms{#1}}_p}% \zpdot[T]
+}
+
+\newcommand{\zLdot}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\dot{\v{z}}_{\sss{L}}}{\v{z}^{\ms{#1}}_{\sss{L}}}% \zLdot[T]
+}
+
+\newcommand{\zvdot}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\dot{\v{z}}_v}{\v{z}^{\ms{#1}}_v}% \zvdot[T]
+}
+
+\newcommand{\zvddot}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\ddot{\v{z}}_v}{\v{z}^{\ms{#1}}_v}% \zvdot[T]
+}
+
+\newcommand{\zvdothat}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\widehat{\dot{\v{z}}}_v}{\v{z}^{\ms{#1}}_v}% \zvdothat[T]
+}
+
+\newcommand{\zvdothatdot}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\widehat{\dot{\v{z}}}_v}{\v{z}^{\ms{#1}}_v}% \zvdothatdot[T]
+}
+
+\newcommand{\zdirdot}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\dot{\v{z}}_q}{\v{z}^{\ms{#1}}_q}% \zqdot[T]
+}
+
+\newcommand{\zone}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\v{z}_1}{\v{z}^{\ms{#1}}_1}
+}
+
+\newcommand{\zonedot}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\dot{\v{z}}_1}{\v{z}^{\ms{#1}}_1}
+}
+
+\newcommand{\zw}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\v{z}_\omega}{\v{z}^{\ms{#1}}_\omega}
+}
+
+\newcommand{\zwdot}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\dot{\v{z}}_\omega}{\v{z}^{\ms{#1}}_\omega}
+}
+
+\newcommand{\zwdothat}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\widehat{\dot{\v{z}}}_\omega}{\widehat{\dot{\v{z}}}^{\ms{#1}}_\omega}
+}
+
+\newcommand{\ztwo}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\v{z}_2}{\v{z}^{\ms{#1}}_2}
+}
+
+\newcommand{\ztwodot}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\dot{\v{z}}_2}{\v{z}^{\ms{#1}}_2}
+}
+
+\newcommand{\ztwod}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\v{z}_{2d}}{\v{z}^{\ms{#1}}_{2d}}
+}
+
+\newcommand{\po}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\v{p}_o}{\v{z}^{\ms{#1}}_o}
+}
+
+
+\newcommand{\zr}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\v{z}_r}{\v{z}^{\ms{#1}}_r}% \zr[T]
+}
+
+\newcommand{\zrdot}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\dot{\v{z}}_r}{\dot{\v{z}}^{\ms{#1}}_r}% \zrdot[T]
+}
+
+\newcommand{\disttilde}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\widetilde{\v{b}}}{\widetilde{\v{b}}^{\ms{#1}}}% \zp[T]
+}
+
+\newcommand{\disthat}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\widehat{\v{b}}}{\widehat{\v{b}}^{\ms{#1}}}% \zp[T]
+}
+
+\newcommand{\zc}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\v{z}_\varpi}{\v{z}^{\ms{#1}}_\varpi}
+}
+
+\newcommand{\zchat}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\widehat{\v{z}}_\varpi}{\v{z}^{\ms{#1}}_\varpi}
+}
+
+\newcommand{\zcdot}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\dot{\v{z}}_\varpi}{\v{z}^{\ms{#1}}_\varpi}
+}
+
+\newcommand{\zcdothat}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\widehat{\dot{\v{z}}}_\varpi}{\v{z}^{\ms{#1}}_\varpi}
+}
+
+\newcommand{\qdhat}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\widehat{\mathbf{q}}_d}{\widehat{\mathbf{q}}^{\ms{#1}}_d}% \qdhat[T]
+}
+
+\newcommand{\zvhat}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\widehat{\v{z}}_v}{\widehat{\v{z}}^{\ms{#1}}_v}% \pL[T]
+}
+
+\newcommand{\vLtilde}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\widetilde{\mathbf{v}}_{\sss{L}}}{\widetilde{\mathbf{v}}^{\ms{#1}}_{\sss{L}}}% \pL[T]
+}
+
+\newcommand{\vLhat}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\widehat{\mathbf{v}}_{\sss{L}}}{\widehat{\mathbf{v}}^{\ms{#1}}_{\sss{L}}}% \pL[T]
+}
+
+\newcommand{\vLhatdot}[1][]{%
+	\ifthenelse{\equal{#1}{}}{\dot{\widehat{\mathbf{v}}}_{\sss{L}}}{\dot{\widehat{\mathbf{v}}}^{\ms{#1}}_{\sss{L}}}% \pL[T]
+}
