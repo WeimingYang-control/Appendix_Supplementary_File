@@ -81,8 +81,12 @@
         Gan~Yu, and 
         Carlos~Silvestre
         % <-this % stops a space
-    \thanks{The authors are with the Department of Electrical and Computer Engineering, Faculty of Science and Technology, University of Macau, Macau, China (e-mail:\href{mailto:weiming.yang@connect.um.edu.mo}{\{weiming.yang}\href{mailto:ganyu@um.edu.mo}{,ganyu}\href{mailto:joelreis@um.edu.mo}{,joelreis}\href{mailto:csilvestre@um.edu.mo}{,csilvestre\}@um.edu.mo})}%
+%    \thanks{The authors are with the Department of Electrical and Computer Engineering, Faculty of Science and Technology, University of Macau, Macau, China (e-mail:\href{mailto:weiming.yang@connect.um.edu.mo}{\{weiming.yang}\href{mailto:ganyu@um.edu.mo}{,ganyu}\href{mailto:joelreis@um.edu.mo}{,joelreis}\href{mailto:csilvestre@um.edu.mo}{,csilvestre\}@um.edu.mo})}%
+%	\thanks{C. Silvestre is on leave from Instituto Superior Técnico, Universidade de Lisboa, Lisboa, Portugal.}
+	\thanks{Weiming~Yang and Carlos~Silvestre are with the Department of Electrical and Computer Engineering, Faculty of Science and Technology, University of Macau, China (e-mail: weiming.yang@connect.um.edu.mo, csilvestre@um.edu.mo).
+		Joel~Reis is with the Department of Ocean Science and Technology at the same institution (e-mail: joelreis@um.edu.mo).}
 	\thanks{C. Silvestre is on leave from Instituto Superior Técnico, Universidade de Lisboa, Lisboa, Portugal.}
+	\thanks{Gan~Yu is with the School of Sensing Science and Engineering, School of Electronic Information and Electrical Engineering, Shanghai Jiao Tong University, Shanghai 200240, China (e-mail: sjtuganyu@sjtu.edu.cn).}
 }
 
 \markboth{Updated last time: \today}%
@@ -93,13 +97,9 @@
 \begin{abstract}
 	This is a complementary document to the paper presented in \cite{2023_Yang_Automatica}.
 	Here we fully disclose all the detailed derivations and equations that are essential to implement the controller reported therein.
-	The main paper addresses the nonlinear control problem of balancing an inverted pendulum on a flying underactuated unmanned aerial vehicle.
-	To simultaneously tackle the system's slow and fast transients, a novel error transformation approach is considered where no linearization method whatsoever is used, making this controller suitable beyond the scope of trim maneuvers.
-	Furthermore, the controller features an adaptive bounded law that is used to compensate for unknown external disturbances.
-	Our Lyapunov-based control design is rooted in an integral backstepping process, wherein the origin of the closed-loop total system error is shown to be almost globally asymptotically stable.
 \end{abstract}
 
-\section{title}
+\section{The transition matrix and the observability Gramian calculations}
 
 	\begin{align}
 	\bs{\Phi}(t,t_0):= {\mathbf I} + \int_{t_0}^t{\mathbf A}(\sigma_1)d\sigma_1 + \int_{t_0}^t{\mathbf A}(\sigma_1)\int_{t_0}^{\sigma_1}{\mathbf A}(\sigma_2)d\sigma_2d\sigma_1 \cdots
@@ -117,9 +117,9 @@ According to the transition matrix definition in \eqref{def:Phi_t_t0},  the tran
 			{\bf 0}  & {\bf 0} & {\bf 0} & {\bf 0} & {\bf I}(t-t_0) & {\bf 0}\\
 			{\bf 0}  & {\bf 0} & \frac{\mQ\ell}{\mT}\int_{t_0}^t\dir\dir[T] & {\bf 0} & {\bf 0} & {\bf I}(t-t_0)\\
 			{\bf 0}  & {\bf 0} & {\bf 0} & {\bf 0} & {\bf 0} & {\bf 0}
-		\end{bmatrix}
+		\end{bmatrix}~\text{and}
 \end{align}
-
+%
 \begin{align}
 	\int_{t_0}^t{\mathbf A}(\sigma_1)\int_{t_0}^{\sigma_1}{\mathbf A}(\sigma_2)d\sigma_2d\sigma_1=
 	\begin{bmatrix}
@@ -129,11 +129,14 @@ According to the transition matrix definition in \eqref{def:Phi_t_t0},  the tran
 			{\bf 0}  & {\bf 0} & \bs{n_{q2}} & {\bf 0} & {\bf 0} & \bs{n_{t2}}\\
 			{\bf 0}  & {\bf 0} & {\bf 0} & {\bf 0} & {\bf 0} & {\bf 0}\\
 			{\bf 0}  & {\bf 0} & {\bf 0} & {\bf 0} & {\bf 0} & {\bf 0}
-		\end{bmatrix}
+		\end{bmatrix},~\text{respectively},
 \end{align}
 where $\bs{n_{t1}}:=(t-t_0){\bf I}$, $\bs{n_{t2}}:=\frac{1}{2}(t-t_0)^2{\bf I}$, $\bs{n_{q1}}:=\frac{\mQ\ell}{\mT}\int_{t_0}^t\dir\dir[T]$ and
 $\bs{n_{q2}}:=\frac{\mQ\ell}{\mT}\int_{t_0}^t\int_{t_0}^t\dir\dir[T]d\tau d\tau$.
 
+It is noticed that the matrix of ${\mathbf A}$ is nilpotent of index 3, i.e. ${\mathbf A}^n={\mathbf 0}$ for $n\geq3$ where $n$ is a positive integer.
+Based on the definition of the observability Gramian , using \eqref{def:Phi_t_t0} and the nilpotent property of ${\mathbf A}$, it is given by
+%
 	\begin{align}
 		\bs{W}(t_0,t_f)=\int_{t_0}^{t_f}
 		\begin{bmatrix}
@@ -146,9 +149,11 @@ $\bs{n_{q2}}:=\frac{\mQ\ell}{\mT}\int_{t_0}^t\int_{t_0}^t\dir\dir[T]d\tau d\tau$
 		\end{bmatrix}\otimes {\bf I}~dt
 		\label{eq:W_t0_tf}
 	\end{align}
+%
+where $n_t:=\frac{1}{2}(t-{t_0})^2$.
 
-
-
+Setting $t_0=t-\delta$ and $t_f=t$, $\bs{W}(t_0,t_f)$ is obtained as
+%
 	\begin{align}
 		\bs{W}(t-\delta,t)=
 		\begin{bmatrix}
@@ -161,43 +166,6 @@ $\bs{n_{q2}}:=\frac{\mQ\ell}{\mT}\int_{t_0}^t\int_{t_0}^t\dir\dir[T]d\tau d\tau$
 		\end{bmatrix}\otimes {\bf I}
 		\label{eq:W_t_delta}
 	\end{align}
-
-
-\section{Estimation related terms}
-
-\begin{equation}
-	\widetilde{W_1}:=\frac{\partial V_1}{\partial \vL}\LP\widetilde{\f_v}^{\|} + \frac{\mQ\ellp}{\mT}\widetilde{\f_q}^{\|} + \frac{1}{\mT}\LP\frac{\partial\Xiq}{\partial\zv}\RP^{\|}\vLtilde\RP \in \mathbb{R}
-\end{equation}
-By exploiting the proposed KF, exchange the unmeasured linear velocity $\vL$ in \eqref{eq:zv} with estimation value which is obtained from \eqref{def:x_hat} as
-$\zv = \zvhat + \vLtilde$,
-%
-where $\zvhat:=\vLhat - \pLddot\in\mathbb{R}^3$. 
-Then
-%
-$ \Xiq = \widehat{\Xiq} + \partial \Xiq/\partial \zv\vLtilde$,
-%
-where $\widehat{\Xiq}:=\mT\LP{\bf K_p}\zp + {\bf K_v} \zvhat + g\ez - \pLdddot\RP$ and $\partial \Xiq/\partial \zv:= \mT{\bf K_v}$.
-
-%where $\partial V_2/\partial \f_v=\frac{\partial V_1\trs}{\partial \vL}\dir\dir[T]$, $\partial V_2/\partial \f_q:=\mQ\ellp/\mT{\bf e}\trs\dir\dir[T]$ and $\partial V_2/\partial \zv:=1/\mT{\bf e}\trs\dir\dir[T]\partial \Xiq/\partial \zv$.
-
-\begin{align}
-	\widetilde{W_2} := \widetilde{W_1} - \frac{h_\v{q}}{\|\Xiq\|}\dir[T]\Skew[2]{\dird}  \frac{\partial \Xiq}{\partial \vL}\LP\widetilde{\f_v} 
-	+ \frac{\mQ\ellp}{\mT}\widetilde{\f_q} \RP^{\|}\in\mathbb{R}
-\end{align}
-
-\begin{align}
-	\widetilde{W_3} := \widetilde{W_2} + h_{\bs\varpi}\zc[T]\LP\widetilde{\f_q} - \LP\dot{\bs{\varpi_d}} - \widehat{\dot{\bs{\varpi_d}}}\RP -  \frac{h_\v{q}}{h_{\bs{\varpi}}}\LP\dird-\qdhat
-	\RP + \frac{k_{\bs{\varpi}}}{h_{\bs{\varpi}}}\LP\zc-\zchat\RP\RP\in\mathbb{R}
-\end{align}
-
-\begin{align}
-	\widetilde{W_4}:=\widetilde{W_3} + h_\v{r}\rzd\trs \RotM\Skew{\ez}\LP
-	\vphantom{\LP\frac{\partial V_4}{\partial\vL}\dir\RP\trs}
-	-\RotM[T]\Skew{\rzd}(\rzddot-\widehat{\rzddot})
-	-\frac{T_d}{h_\v{r}\mT}\Skew{\ez}\RotM[T](\bs{\delta}_2\trs-\widehat{\bs{\delta}_2}\trs)^{\|}
-	+\frac{h_{\bs\varpi}}{h_\v{r}}\frac{T_d}{\mQ\ellp}\Skew{\ez}\RotM[T](\zc-\widehat{\zc})^{\perp}\RP
-\end{align}
-
 
 \section{Computation of auxiliary variables}
 \label{sec:aux_notation}
@@ -215,7 +183,7 @@ where $\widehat{\Xiq}:=\mT\LP{\bf K_p}\zp + {\bf K_v} \zvhat + g\ez - \pLdddot\R
 		\vLdot|_{\f=\fd^{\|}} = g\ez - \frac{1}{\mT}\widehat{\Xiq}^{\|}.
 	\end{equation}
 
-	All the time derivatives that explicitly feature $\vLdot$ can be divided into three terms: one related to $\fd^{\|}$ and $\widehat{\Xiq}$, one related to the error $\f^{\|}-\fd^{\|}$, and another related to $\widetilde{\f_v}$ and $\widetilde{\f_q}$.
+	All the time derivatives that explicitly feature $\vLdot$ can be divided into three terms: one related to $\fd^{\|}$, one related to the error $\f^{\|}-\fd^{\|}$, and another related to $\widetilde{\f_v}$ and $\widetilde{\f_q}$.
 
 	Similarly, we can rearrange (8) as
 	%
@@ -245,8 +213,10 @@ where
 %
 \begin{align}
 	\dot{\Xiq}|_{\f=\fd^{\|}} = \mT\LP {\bf K_p}\zv + {\bf K_v} \zvdothat|_{\f=\fd^{\|}}
-	- \pLdtdot\RP
+	- \pLdtdot\RP,
 \end{align}
+%
+its corresponding estimation
 %
 \begin{align}
 	\widehat{\dot{\Xiq}}|_{\f=\fd^{\|}} = \mT\LP {\bf K_p}\zvhat + {\bf K_v} \zvdothat|_{\f=\fd^{\|}}
@@ -419,11 +389,7 @@ and $\frac{\partial \Xiq}{\partial \vL}:=\mT{\bf K_v}$.
 
     \begin{align}
         \frac{\partial\zwdothat|_{\f=\fd^{\|}}}{\partial\vL}&=-\frac{k_q}{h_q}\left(\LSB\Skew{\dirdot}\Skew{\dir}+\Skew{\dir}\Skew{\dirdot}\RSB\frac{\partial\dird}{\partial\vL}
-        +\Skew[2]{\dir}\frac{\partial\qddothat|_{\f=\fd^{\|}}}{\partial\vL}\right)+\frac{\epsilon}{h_{q}\mT}\frac{1}{\|\Xiq\|}\left[\vphantom{\frac{\partial\zvdothat|_{\f=\fd^{\|}}}{\partial\vL}}\Skew[2]{\dir}(\Xiq[T]\widehat{\dot{\Xiq}}|_{\f=\fd^{\|}})\frac{\partial{\bf e}}{\partial\vL}\right. \nonumber\\
-        &\left.+\frac{1}{\|\Xiq\|}\Skew[2]{\dir}{\bf e}\LP\|\Xiq\|\widehat{\dot{\Xiq}}|_{\f=\fd^{\|}}\trs\frac{\partial\Xiq}{\partial\vL}-\frac{1}{\|\Xiq\|}\Xiq[T]\widehat{\dot{\Xiq}}|_{\f=\fd^{\|}}\Xiq[T]\frac{\partial\Xiq}{\partial\vL}\RP
-        + \Skew[2]{\dir}{\bf e}\Xiq[T]\frac{\partial\widehat{\dot{\Xiq}}|_{\f=\fd^{\|}}}{\partial\vL}+\Skew[2]{\dir}\widehat{\dot{\bf e}}|_{\f=\fd^{\|}}\Xiq[T]\frac{\partial\Xiq}{\partial\vL}\right.\nonumber\\
-        &
-        \left.+\LSB\Skew{\dirdot}\Skew{\dir}+\Skew{\dir}\Skew{\dirdot}\RSB\LP{\bf e}\Xiq[T]\frac{\partial\Xiq}{\partial\vL} + \|\Xiq\|^2\frac{\partial{\bf e}}{\partial\vL}\RP +\epsilon\|\Xiq\|^2\Skew[2]{\dir}\frac{\partial\zvdothat|_{\f=\fd^{\|}}}{\partial\vL}\right]-\Skew{\dirdot}\Skew{\frac{\widehat{\dot{\Xiq}}|_{\f=\fd^{\|}}}{\|\Xiq\|}}\frac{\partial\dird}{\partial\vL} \nonumber\\
+        +\Skew[2]{\dir}\frac{\partial\qddothat|_{\f=\fd^{\|}}}{\partial\vL}\right)-\Skew{\dirdot}\Skew{\frac{\widehat{\dot{\Xiq}}|_{\f=\fd^{\|}}}{\|\Xiq\|}}\frac{\partial\dird}{\partial\vL} \nonumber\\
         &
         +\frac{\Skew{\dirdot}\Skew{\dird}+\Skew{\dir}\Skew{\qddothat|_{\f=\f_d^{\|}}}}{\|\Xiq\|}\LP\frac{\partial\widehat{\dot{\Xiq}}|_{\f=\fd^{\|}}}{\partial\vL}-\frac{\widehat{\dot{\Xiq}}|_{\f=\fd^{\|}}\Xiq[T]\frac{\partial\Xiq}{\partial\vL}}{\|\Xiq\|^2}\RP -\Skew{\dir}\Skew{\frac{\widehat{\dot{\Xiq}}|_{\f=\fd^{\|}}}{\|\Xiq\|}} \frac{\partial\qddothat|_{\f=\fd^{\|}}}{\partial\vL}\nonumber\\
         &
@@ -538,28 +504,29 @@ and $\frac{\partial \Xiq}{\partial \vL}:=\mT{\bf K_v}$.
 		\frac{d}{dt}\LP\qddothat|_{\f=\f_d^{\|}}\RP_{\text{est}} = \frac{1}{\|\Xiq\|^2}\LP\|\Xiq\|\LP\Skew{\qddothat}\Skew{\dird}+\Skew{\dird}\Skew{\qddothat}\RP-\frac{1}{\|\Xiq\|}\Skew[2]{\dird}\Xiq[T]\widehat{\dot{\Xiq}}\RP\widehat{\dot{\Xiq}}|_{\f=\fd^{\|}}+\frac{1}{\|\Xiq\|}\Skew[2]{\dird}\frac{d}{dt}\LP\widehat{\dot{\Xiq}}|_{\f=\fd^{\|}}\RP_{\text{est}},
 	\end{equation}
 	%
-	\begin{equation}
-		\wLdothat = \minus\frac{1}{\mQ\ell}\Skew{\dir}(\f+\widehat{\dist}),
-	\end{equation}
-	%
-	\begin{equation}
-		\dirddothat = \minus\Skew{\dir}\wLdothat - \|\wL\|^2\dir
-	\end{equation}
+%	\begin{equation}
+%		\wLdothat = \minus\frac{1}{\mQ\ell}\Skew{\dir}(\f+\widehat{\dist}),
+%	\end{equation}
+%	%
+%	\begin{equation}
+%		\dirddothat = \minus\Skew{\dir}\wLdothat - \|\wL\|^2\dir
+%	\end{equation}
 	%
 	\begin{equation}
 		\begin{aligned}
-			\frac{d}{dt}\LP\frac{d}{dt}\LP\zvdothatdot|_{\f=\fd^{\|}}\RP_{\text{est}}|_{\f=\fd^{\|}}\RP_{\text{est}} =~& -\frac{1}{\mT}\left(\vphantom{\frac{d}{dt}\LP\widehat{\dot{\Xiq}}|_{\f=\fd^{\|}}\RP_{\text{est}}}\dirddothat\dir[T]\Xiq+\dirdot\dirdot[T]\Xiq+\dirdot\dir[T]\widehat{\dot{\Xiq}}+\dirdot\dirdot[T]\Xiq+\dir\dirddothat[T]\Xiq+\dir\dirdot[T]\widehat{\dot{\Xiq}}+\dirdot\dir[T]\widehat{\dot{\Xiq}}|_{\f=\fd^{\|}}\right.\nonumber\\
-			&\left.+\dir\dirdot[T]\widehat{\dot{\Xiq}}|_{\f=\fd^{\|}}+\dir\dir[T]\frac{d}{dt}\LP\widehat{\dot{\Xiq}}|_{\f=\fd^{\|}}\RP_{\text{est}}\right)-\pLdqdot,
+			\frac{d}{dt}\LP\frac{d}{dt}\LP\zvdothatdot|_{\f=\fd^{\|}}\RP_{\text{est}}|_{\f=\fd^{\|}}\RP_{\text{est}} =~& -\frac{1}{\mT}\left(\vphantom{\frac{d}{dt}\LP\widehat{\dot{\Xiq}}|_{\f=\fd^{\|}}\RP_{\text{est}}}\dot{\widehat{\bs{\varpi}}}\dir[T]\widehat{\Xiq}+\widehat{\bs{\varpi}}\widehat{\bs{\varpi}}\trs\widehat{\Xiq}+\widehat{\bs{\varpi}}\dir[T]\widehat{\dot{\Xiq}}+\widehat{\bs{\varpi}}\widehat{\bs{\varpi}}\trs\widehat{\Xiq}+\dir\dot{\widehat{\bs{\varpi}}}\trs\widehat{\Xiq}+\dir\widehat{\bs{\varpi}}\trs\widehat{\dot{\Xiq}}+\widehat{\bs{\varpi}}\dir[T]\widehat{\dot{\Xiq}}|_{\f=\fd^{\|}}\right.\nonumber\\
+			&\left.+\dir\widehat{\bs{\varpi}}\trs\widehat{\dot{\Xiq}}|_{\f=\fd^{\|}}+\dir\dir[T]\frac{d}{dt}\LP\widehat{\dot{\Xiq}}|_{\f=\fd^{\|}}\RP_{\text{est}}\right)-\pLdqdot,
 		\end{aligned}
 	\end{equation}
 	%
-	\begin{equation}
-		\frac{d}{dt}\LP\frac{d}{dt}\LP\widehat{\dot{\bs{\zeta}}}|_{\f=\fd^{\|}}\RP_{\text{est}}|_{\f=\fd^{\|}}\RP_{\text{est}} = \epsilon^2( {\bf I} + {\bf K_v}{\bf K_p} )\frac{d}{dt}\LP\zvdothatdot|_{\f=\fd^{\|}}\RP_{\text{est}}
-		+ \epsilon( {\bf K_p} + {\bf K_v} )\frac{d}{dt}\LP\frac{d}{dt}\LP\zvdothatdot|_{\f=\fd^{\|}}\RP_{\text{est}}|_{\f=\fd^{\|}}\RP_{\text{est}},
-	\end{equation}
+%	\begin{equation}
+%		\frac{d}{dt}\LP\frac{d}{dt}\LP\widehat{\dot{\bs{\zeta}}}|_{\f=\fd^{\|}}\RP_{\text{est}}|_{\f=\fd^{\|}}\RP_{\text{est}} = \epsilon^2( {\bf I} + {\bf K_v}{\bf K_p} )\frac{d}{dt}\LP\zvdothatdot|_{\f=\fd^{\|}}\RP_{\text{est}}
+%		+ \epsilon( {\bf K_p} + {\bf K_v} )\frac{d}{dt}\LP\frac{d}{dt}\LP\zvdothatdot|_{\f=\fd^{\|}}\RP_{\text{est}}|_{\f=\fd^{\|}}\RP_{\text{est}},
+%	\end{equation}
 	%
 	\begin{equation}
-		\frac{d}{dt}\LP\frac{d}{dt}\LP\widehat{\dot{\Xiq}}|_{\f=\fd^{\|}}\RP_{\text{est}}|_{\f=\fd^{\|}}\RP_{\text{est}} = \mT\left( \frac{d}{dt}\LP\frac{d}{dt}\LP\widehat{\dot{\bs{\zeta}}}|_{\f=\fd^{\|}}\RP_{\text{est}}|_{\f=\fd^{\|}}\RP_{\text{est}}
+		\frac{d}{dt}\LP\frac{d}{dt}\LP\widehat{\dot{\Xiq}}|_{\f=\fd^{\|}}\RP_{\text{est}}|_{\f=\fd^{\|}}\RP_{\text{est}} = \mT\left(  {\bf K_p} \frac{d}{dt}\LP\zvdothatdot|_{\f=\fd^{\|}}\RP_{\text{est}}
+		+  {\bf K_v} \frac{d}{dt}\LP\frac{d}{dt}\LP\zvdothatdot|_{\f=\fd^{\|}}\RP_{\text{est}}|_{\f=\fd^{\|}}\RP_{\text{est}}
 		- \pLd^{(5)}\right),
 	\end{equation}
 	%
@@ -578,6 +545,44 @@ and $\frac{\partial \Xiq}{\partial \vL}:=\mT{\bf K_v}$.
 		&\left.\left.+\frac{1}{\|\widehat{\Xiq}\|^3}\widehat{\dot{\Xiq}}|_{\f=\fd^{\|}}\widehat{\Xiq}\trs\frac{d}{dt}\LP\widehat{\dot{\Xiq}}|_{\f=\fd^{\|}}\RP_{\text{est}}\right]\right).
 	\end{align} 
 
+\section{Estimation Errors Associated term}
+
+Baesd on auxiliary calculation in Section~\ref{sec:aux_notation}, the estimation related terms $\widetilde{W_1}$ in (25),  $\widetilde{W_2}$ in (27), $\widetilde{W_3}$ in (28) and $\widetilde{W_4}$ in (34) are expressed by
+%
+\begin{equation}
+	\widetilde{W_1}:=\frac{\partial V_1}{\partial \vL}\LP\widetilde{\f_v}^{\|} + \frac{\mQ\ellp}{\mT}\widetilde{\f_q}^{\|} + \frac{1}{\mT}\LP\frac{\partial\Xiq}{\partial\zv}\RP^{\|}\vLtilde\RP \in \mathbb{R},
+\end{equation}
+%By exploiting the proposed KF, exchange the unmeasured linear velocity $\vL$ in \eqref{eq:zv} with estimation value which is obtained from \eqref{def:x_hat} as
+%$\zv = \zvhat + \vLtilde$,
+%%
+%where $\zvhat:=\vLhat - \pLddot\in\mathbb{R}^3$. 
+%Then
+%%
+%$ \Xiq = \widehat{\Xiq} + \partial \Xiq/\partial \zv\vLtilde$,
+%%
+%where $\widehat{\Xiq}:=\mT\LP{\bf K_p}\zp + {\bf K_v} \zvhat + g\ez - \pLdddot\RP$ and $\partial \Xiq/\partial \zv:= \mT{\bf K_v}$.
+%
+%where $\partial V_2/\partial \f_v=\frac{\partial V_1\trs}{\partial \vL}\dir\dir[T]$, $\partial V_2/\partial \f_q:=\mQ\ellp/\mT{\bf e}\trs\dir\dir[T]$ and $\partial V_2/\partial \zv:=1/\mT{\bf e}\trs\dir\dir[T]\partial \Xiq/\partial \zv$.
+%
+\begin{align}
+	\widetilde{W_2} := \widetilde{W_1} - \frac{h_\v{q}}{\|\Xiq\|}\dir[T]\Skew[2]{\dird}  \frac{\partial \Xiq}{\partial \vL}\LP\widetilde{\f_v} 
+	+ \frac{\mQ\ellp}{\mT}\widetilde{\f_q} \RP^{\|}\in\mathbb{R},
+\end{align}
+%
+\begin{align}
+	\widetilde{W_3} := \widetilde{W_2} + h_{\bs\varpi}\zc[T]\LP\widetilde{\f_q} - \LP\dot{\bs{\varpi_d}} - \widehat{\dot{\bs{\varpi_d}}}\RP -  \frac{h_\v{q}}{h_{\bs{\varpi}}}\LP\dird-\qdhat
+	\RP + \frac{k_{\bs{\varpi}}}{h_{\bs{\varpi}}}\LP\zc-\zchat\RP\RP\in\mathbb{R},~\text{and}
+\end{align}
+%
+\begin{align}
+	\widetilde{W_4}:=\widetilde{W_3} + h_\v{r}\rzd\trs \RotM\Skew{\ez}\LP
+	\vphantom{\LP\frac{\partial V_4}{\partial\vL}\dir\RP\trs}
+	-\RotM[T]\Skew{\rzd}(\rzddot-\widehat{\rzddot})
+	-\frac{T_d}{h_\v{r}\mT}\Skew{\ez}\RotM[T](\bs{\delta}_2\trs-\widehat{\bs{\delta}_2}\trs)^{\|}
+	+\frac{h_{\bs\varpi}}{h_\v{r}}\frac{T_d}{\mQ\ellp}\Skew{\ez}\RotM[T](\zc-\widehat{\zc})^{\perp}\RP
+\end{align}
+%
+, respectively.
 \begin{thebibliography}{9}
 \bibitem{2023_Yang_Automatica}
 Yang, W., Yu, G., Reis, J. and Silvestre, C. Robust Nonlinear 3D Control of an Inverted Pendulum Balanced on a Quadrotor. {\em Automatica}. pp. 1-12 (2023)
