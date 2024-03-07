@@ -74,7 +74,7 @@
 
 \begin{document}
 
-\title{Output Feedback Nonlinear Control of An Underactuated  Flying Inverted Pendulum: Supplementary Material}
+\title{Nonlinear Output Feedback Control of an Underactuated  Flying Inverted Pendulum: Supplementary Material}
 
 \author{Weiming~Yang,
 		Joel~Reis,
@@ -85,8 +85,8 @@
 %	\thanks{C. Silvestre is on leave from Instituto Superior Técnico, Universidade de Lisboa, Lisboa, Portugal.}
 	\thanks{Weiming~Yang and Carlos~Silvestre are with the Department of Electrical and Computer Engineering, Faculty of Science and Technology, University of Macau, China (e-mail: weiming.yang@connect.um.edu.mo, csilvestre@um.edu.mo).
 		Joel~Reis is with the Department of Ocean Science and Technology at the same institution (e-mail: joelreis@um.edu.mo).}
-	\thanks{C. Silvestre is on leave from Instituto Superior Técnico, Universidade de Lisboa, Lisboa, Portugal.}
 	\thanks{Gan~Yu is with the School of Sensing Science and Engineering, School of Electronic Information and Electrical Engineering, Shanghai Jiao Tong University, Shanghai 200240, China (e-mail: sjtuganyu@sjtu.edu.cn).}
+	\thanks{C. Silvestre is on leave from Instituto Superior Técnico, Universidade de Lisboa, Lisboa, Portugal.}
 }
 
 \markboth{Updated last time: \today}%
@@ -95,7 +95,7 @@
 \maketitle
 
 \begin{abstract}
-	This is a complementary document to the paper presented in \cite{2023_Yang_Automatica}.
+	This is a complementary document to the paper presented in \cite{2024_Yang_TIE}.
 	Here we fully disclose all the detailed derivations and equations that are essential to implement the controller reported therein.
 \end{abstract}
 
@@ -135,7 +135,7 @@ where $\bs{n_{t1}}:=(t-t_0){\bf I}$, $\bs{n_{t2}}:=\frac{1}{2}(t-t_0)^2{\bf I}$,
 $\bs{n_{q2}}:=\frac{\mQ\ell}{\mT}\int_{t_0}^t\int_{t_0}^t\dir\dir[T]d\tau d\tau$.
 
 It is noticed that the matrix of ${\mathbf A}$ is nilpotent of index 3, i.e. ${\mathbf A}^n={\mathbf 0}$ for $n\geq3$ where $n$ is a positive integer.
-Based on the definition of the observability Gramian , using \eqref{def:Phi_t_t0} and the nilpotent property of ${\mathbf A}$, it is given by
+Based on the definition of the observability Gramian, using \eqref{def:Phi_t_t0} and the nilpotent property of ${\mathbf A}$, it is given by
 %
 	\begin{align}
 		\bs{W}(t_0,t_f)=\int_{t_0}^{t_f}
@@ -159,13 +159,65 @@ Setting $t_0=t-\delta$ and $t_f=t$, $\bs{W}(t_0,t_f)$ is obtained as
 		\begin{bmatrix}
 			\delta  & \frac{\delta^2}{2} & \frac{\delta^3}{6}  & {\bf 0} & {\bf 0} & {\bf 0} \\
 			\frac{\delta^2}{2} & \frac{\delta^3}{3} & \frac{\delta^4}{8} & {\bf 0} & {\bf 0} & {\bf 0} \\
-			\frac{\delta^3}{6} & \frac{\delta^4}{8} & \frac{\delta^5}{20}+\int_{t-\delta}^{t}\bs{n_{q2}}\trs\bs{n_{q2}} & \bs{n_{q2}}\trs & (t-t_0)\bs{n_{q2}}\trs & n_t\bs{n_{q2}}\trs\\
-			{\bf 0} & {\bf 0} & \bs{n_{q2}}  & \delta  & \frac{\delta^2}{2} & \frac{\delta^3}{6}\\
-			{\bf 0} & {\bf 0} & (t-t_0)\bs{n_{q2}} & \frac{\delta^2}{2} & \frac{\delta^3}{3} & \frac{\delta^4}{8}\\
-			{\bf 0} & {\bf 0} & n_t\bs{n_{q2}} & \frac{\delta^3}{6} & \frac{\delta^4}{8} & \frac{\delta^5}{20}
+			\frac{\delta^3}{6} & \frac{\delta^4}{8} & \frac{\delta^5}{20}+\int_{t-\delta}^{t}\bs{n_{q2}}\trs\bs{n_{q2}} & \int_{t-\delta}^{t}\bs{n_{q2}}\trs & \bs{\varphi}_1\trs & \bs{\varphi}_2\trs\\
+			{\bf 0} & {\bf 0} & \int_{t-\delta}^{t}\bs{n_{q2}}  & \delta  & \frac{\delta^2}{2} & \frac{\delta^3}{6}\\
+			{\bf 0} & {\bf 0} & \bs{\varphi}_1 & \frac{\delta^2}{2} & \frac{\delta^3}{3} & \frac{\delta^4}{8}\\
+			{\bf 0} & {\bf 0} & \bs{\varphi}_2 & \frac{\delta^3}{6} & \frac{\delta^4}{8} & \frac{\delta^5}{20}
 		\end{bmatrix}\otimes {\bf I}
 		\label{eq:W_t_delta}
 	\end{align}
+%
+%(t-t_0)\bs{n_{q2}}
+%n_t\bs{n_{q2}}
+where $\bs{\varphi}_1:=\frac{\delta^2}{2}\bs{n_{q2}} - \frac{\delta^2}{2} \int_{t-\delta}^{t}\bs{n_{q1}}$ and $\bs{\varphi}_2:=\frac{\delta^3}{6}\bs{n_{q2}} - \frac{\delta^3}{6} \int_{t-\delta}^{t}\bs{n_{q1}}$.
+
+\section{Proof of Theorem 3}\label{sec:x_tilde}
+%
+Based on $\bs{x}(t)$ (10) and $\widehat{\bs{x}}(t)$ (19), the estimation error is defined as $\widetilde{\bs{x}}(t):=\bs{x}(t)-\widehat{\bs{x}}(t)$.
+%
+%\begin{theorem}
+%		Granted the continuous time LTV system (11) in \cite{2024_Yang_TIE} is u.c.o., and $\bs{\mathcal{P}} (t_0)\in\mathbb{R}^{18\times18}_{\succ0}$, $\widetilde{\bs{x}}$ is uniformly ultimately bounded.
+%\end{theorem}
+%
+%\begin{proof}
+Using $\dot{{\bs{x}}}(t)$ in (11) and $\dot{\widehat{\bs{x}}}(t)$ in (18), it follows that
+%
+\begin{equation}
+	\dot{\widetilde{\bs{x}}}(t)=({\bf A}(t)-\bs{\mathcal{K}} (t){\bf C})\widetilde{\bs{x}}(t) +\bs{h}(t).
+\end{equation}
+%
+The Lyapunov function for KF is chosen as $V_{\text{KF}}:=\widetilde{\bs{x}}\trs\bs{\mathcal{P}}^{-1}\widetilde{\bs{x}}$. 
+Notice that, rely on Remark~1, the Lyapunov function $V_{\text{KF}}$ satisfies 
+%
+\begin{equation}
+	\lambda_{\min}(\bs{\mathcal{P}}^{-1})\|\widetilde{\bs{x}}\|^2 \leq V_{\text{KF}} \leq \lambda_{\max}(\bs{\mathcal{P}}^{-1})\|\widetilde{\bs{x}}\|^2
+\end{equation}
+%
+where $\lambda_{\max}(\bs{\mathcal{P}}^{-1})\geq\lambda_{\min}(\bs{\mathcal{P}}^{-1})>0$.
+
+Using (18), the time derivative of $V_{\text{KF}}$ can be written as
+%
+\begin{equation}
+	\dot{V}_{\text{KF}}\leq-\lambda_{\min}(\bs{\Upsilon}(t))\|\widetilde{\bs{x}}(t)\|^2+2\widetilde{\bs{x}}\trs(t)\bs{\mathcal{P}}^{-1}(t)\bs{h}(t)
+\end{equation}
+% 
+where $\bs{\Upsilon}(t):={\mathbf C}\trs \bs{\mathcal{R}} ^{-1}(t){\mathbf C}+\bs{\mathcal{P}}^{-1}(t)\bs{\mathcal{Q}} (t)\bs{\mathcal{P}}^{-1}(t)\in\mathbb{R}^{18\times18}_{\succ0}$.
+Notice that $\|\partial V_{\text{KF}}/\partial \widetilde{\bs{x}}\|\leq 2\lambda_{\min}(\bs{\mathcal{P}}^{-1})\|\widetilde{\bs{x}}\|$.
+
+Based on Assumption~1, suppose the perturbation term $\bs{h}(t)$ satisfies $\|\bs{h}(t)\| \leq \varepsilon <\frac{\lambda_{\min}(\bs{\Upsilon})}{2\lambda_{\min}(\bs{\mathcal{P}}^{-1})}\sqrt{\frac{\lambda_{\min}(\bs{\mathcal{P}}^{-1})}{\lambda_{\max}(\bs{\mathcal{P}}^{-1})}}\epsilon r$, for all $t\geq0$, for all $\widetilde{\bs{x}}\in D$ where $D=\{ \widetilde{\bs{x}}\in\mathbb{R}^{18}| \|\widetilde{\bs{x}}\|<r \}$, and for some positive constant $\epsilon<1$.
+
+According to Lemma 9.2 in \cite{2002_Khalil}, for all $\widetilde{\bs{x}}(t_0)<\sqrt{\frac{\lambda_{\min}(\bs{\mathcal{P}}^{-1})}{\lambda_{\max}(\bs{\mathcal{P}}^{-1})}}r$, and some finite $T$, the solution of $\widetilde{\bs{x}}(t)$ satisfies
+%
+\begin{equation}
+	\|\widetilde{\bs{x}}(t)\|\leq \sqrt{\frac{\lambda_{\max}(\bs{\mathcal{P}}^{-1})}{\lambda_{\min}(\bs{\mathcal{P}}^{-1})}}\exp(-\frac{(1-\epsilon)\lambda_{\min}(\bs{\Upsilon})}{2\lambda_{\max}(\bs{\mathcal{P}}^{-1})}(t-t_0))\|\widetilde{\bs{x}}(t_0), \quad\forall t_0\leq t<t_0+T
+\end{equation}
+%
+and
+%
+\begin{equation}
+	\|\widetilde{\bs{x}}(t)\|\leq \frac{2\lambda_{\min}(\bs{\mathcal{P}}^{-1})}{\lambda_{\min}(\bs{\Upsilon})} \sqrt{\frac{\lambda_{\max}(\bs{\mathcal{P}}^{-1})}{\lambda_{\min}(\bs{\mathcal{P}}^{-1})}}\frac{\varepsilon}{\epsilon}
+\end{equation}
+%\end{proof}
 
 \section{Computation of auxiliary variables}
 \label{sec:aux_notation}
@@ -293,7 +345,7 @@ and $\frac{\partial \Xiq}{\partial \vL}:=\mT{\bf K_v}$.
     \begin{align}
         \left.\frac{\partial\zc}{\partial\vL}\right|_{\text{est}} =&~ \minus \frac{k_q}{h_{q}}\Skew[2]{\dir}\left.\frac{\partial\dird}{\partial\vL}\right|_{\text{est}} -
         \Skew{\dir}\Skew{\frac{\widehat{\dot{\Xiq}}|_{\f=\f_d^{\|}}}{\|\widehat{\Xiq}\|}} \left.\frac{\partial\dird}{\partial\vL}\right|_{\text{est}}
-        -\frac{\Skew{\dir}\Skew{\qdhat}}{\|\widehat{\Xiq}\|^2}\left(\|\widehat{\Xiq}\|\frac{\partial\widehat{\dot{\Xiq}}|_{\f=\fd^{\|}}}{\partial\vL} + \frac{\widehat{\dot{\Xiq}}|_{\f=\f_d^{\|}}\widehat{\Xiq}\trs}{\|\widehat{\Xiq}\|}\frac{\partial\Xiq}{\partial\vL}\right),
+        -\frac{\Skew{\dir}\Skew{\qdhat}}{\|\widehat{\Xiq}\|^2}\left(\|\widehat{\Xiq}\|\frac{\partial\dot{\Xiq}|_{\f=\fd^{\|}}}{\partial\vL} + \frac{\widehat{\dot{\Xiq}}|_{\f=\f_d^{\|}}\widehat{\Xiq}\trs}{\|\widehat{\Xiq}\|}\frac{\partial\Xiq}{\partial\vL}\right),
         \label{eq:partial_zw_vL}
 	\end{align}
 	%
@@ -317,118 +369,118 @@ and $\frac{\partial \Xiq}{\partial \vL}:=\mT{\bf K_v}$.
 	%
 	%
 	\begin{equation}
-		\frac{\partial\dot{\Xiq}|_{\f=\fd^{\|}}}{\partial\vL}=\mT\LP{\bf K_p} \frac{\partial\zv}{\partial\vL} + {\bf K_v} \frac{\partial\zvdot|_{\f=\fd^{\|}}}{\partial\vL}\RP,
+		\frac{\partial\dot{\Xiq}|_{\f=\fd^{\|}}}{\partial\vL}=\mT\LP\frac{1}{\mT}{\bf K_p} {\bf I}^{\|} + {\bf K_v} \frac{\partial\zvdot|_{\f=\fd^{\|}}}{\partial\vL}\RP.
 	\end{equation}
-	%
-	and, finally,
-	%
-	\begin{equation}
-		\frac{\partial\qddothat|_{\f=\fd^{\|}}}{\partial\vL} = \frac{1}{\|\Xiq\|}\LP\dird\dot{\Xiq}|_{\f=\fd^{\|}}^{\trs}-\dot{\Xiq}|_{\f=\fd^{\|}}\dird[T]\RP\frac{\partial\dird}{\partial\vL}
-		-\frac{\Skew[2]{\dird}\dot{\Xiq}|_{\f=\fd^{\|}}\Xiq[T]\frac{\partial\Xiq}{\partial\vL}}{\|\Xiq\|^3} +\frac{\Skew[2]{\dird} \frac{\partial\dot{\Xiq}|_{\f=\fd^{\|}}}{\partial\vL}}{\|\Xiq\|}.
-		\label{eq:partial_qd_vL}
-	\end{equation}
-
-	In the following we present some useful partial derivatives of the Lyapunov function candidates with respect to $\vL$ and $\wL$.
-	They are given by
-	%
-	\begin{equation}
-		\frac{\partial V_3}{\partial\vL} = {\bf e}\trs\frac{\partial{\bf e}}{\partial\vL} -  h_{q}\zdir[T]\frac{\partial\dird}{\partial\vL},
-		\label{eq:partial_V3_vL}
-	\end{equation}
-	%
-	\begin{equation}
-		\frac{\partial V_4}{\partial\vL} = \frac{\partial V_3}{\partial\vL} + h_{\omega}\zw[T]\frac{\partial\zw}{\partial\vL},
-		\label{eq:partial_V4_vL}
-	\end{equation}
-	%
-	\begin{equation}
-		\frac{\partial V_5}{\partial\vL} =\frac{\partial V_4}{\partial\vL} - h_{r}\rzd[T]\RotM\Skew{\ez}\RotM[T]\Skew{\rzd}\frac{\partial\rzd}{\partial\vL} ,
-		\label{eq:partial_V5_vL}
-	\end{equation}
-	%
-	and
-	%
-	\begin{equation}
-		\frac{\partial V_5}{\partial\wL} = h_{\omega}\zw[T]\frac{\partial\zw}{\partial\wL}- h_{r}\rzd[T]\RotM\Skew{\ez}\RotM[T]\Skew{\rzd}\frac{\partial\rzd}{\partial\wL}, 
-		\label{eq:partial_V5_wL}
-	\end{equation}
-	%
-	where
-	%
-	\begin{equation}
-		\frac{\partial\zw}{\partial\wL} = \Skew{\dir},
-	\end{equation}
-	%
-	\begin{equation}
-		\frac{\partial\dirdot}{\partial\wL} = \minus\Skew{\dir},
-	\end{equation}
-	%
-	\begin{equation}
-		\frac{\partial\frac{d}{dt}\LP\zvdothatdot|_{\f=\fd^{\|}}\RP_{\text{est}}}{\partial\wL} = \minus\frac{1}{\mT}\LP\dir[T]\Xiq+\dir\Xiq[T]\RP\frac{\partial\dirdot}{\partial\wL},
-	\end{equation}
-	%
-	\begin{equation}
-		\frac{\partial\frac{d}{dt}\LP\zvdothatdot|_{\f=\fd^{\|}}\RP_{\text{est}}}{\partial\vL} = \minus\frac{(\dirdot\dir[T]+\dir\dirdot[T])\frac{\partial\Xiq}{\partial\vL}+\dir\dir[T]\frac{\partial\widehat{\dot{\Xiq}}|_{\f=\fd^{\|}}}{\partial\vL}}{\mT},
-	\end{equation}
-	%
-	\begin{equation}
-		\frac{\partial\frac{d}{dt}\LP\widehat{\dot{\bs{\zeta}}}|_{\f=\fd^{\|}}\RP_{\text{est}}}{\partial\wL} = \epsilon(\v{K}_\v{p} + \v{K}_\v{v} )\frac{\partial\frac{d}{dt}\LP\zvdothatdot|_{\f=\fd^{\|}}\RP_{\text{est}}}{\partial\wL},
-	\end{equation}
-	%
-	\begin{equation}
-		\frac{\partial\frac{d}{dt}\LP\widehat{\dot{\bs{\zeta}}}|_{\f=\fd^{\|}}\RP_{\text{est}}}{\partial\vL} = \epsilon^2( {\bf I} + {\bf K_v}{\bf K_p})\frac{\partial\zvdothat|_{\f=\fd^{\|}}}{\partial\vL} + \epsilon( {\bf K_p} + {\bf K_v} )\frac{\partial\frac{d}{dt}\LP\zvdothatdot|_{\f=\fd^{\|}}\RP_{\text{est}}}{\partial\vL},
-	\end{equation}
-	%
-	\begin{equation}
-		\frac{\partial\frac{d}{dt}\LP\widehat{\dot{\Xiq}}|_{\f=\fd^{\|}}\RP_{\text{est}}}{\partial\wL} = \mT\frac{\partial\frac{d}{dt}\LP\widehat{\dot{\bs{\zeta}}}|_{\f=\fd^{\|}}\RP_{\text{est}}}{\partial\wL},
-	\end{equation}
-	%
-	\begin{equation}
-		\frac{\partial\frac{d}{dt}\LP\widehat{\dot{\Xiq}}|_{\f=\fd^{\|}}\RP_{\text{est}}}{\partial\vL} = \mT\frac{\partial\frac{d}{dt}\LP\widehat{\dot{\bs{\zeta}}}|_{\f=\fd^{\|}}\RP_{\text{est}}}{\partial\vL},
-	\end{equation}
-
-    \begin{align}
-        \frac{\partial\zwdothat|_{\f=\fd^{\|}}}{\partial\vL}&=-\frac{k_q}{h_q}\left(\LSB\Skew{\dirdot}\Skew{\dir}+\Skew{\dir}\Skew{\dirdot}\RSB\frac{\partial\dird}{\partial\vL}
-        +\Skew[2]{\dir}\frac{\partial\qddothat|_{\f=\fd^{\|}}}{\partial\vL}\right)-\Skew{\dirdot}\Skew{\frac{\widehat{\dot{\Xiq}}|_{\f=\fd^{\|}}}{\|\Xiq\|}}\frac{\partial\dird}{\partial\vL} \nonumber\\
-        &
-        +\frac{\Skew{\dirdot}\Skew{\dird}+\Skew{\dir}\Skew{\qddothat|_{\f=\f_d^{\|}}}}{\|\Xiq\|}\LP\frac{\partial\widehat{\dot{\Xiq}}|_{\f=\fd^{\|}}}{\partial\vL}-\frac{\widehat{\dot{\Xiq}}|_{\f=\fd^{\|}}\Xiq[T]\frac{\partial\Xiq}{\partial\vL}}{\|\Xiq\|^2}\RP -\Skew{\dir}\Skew{\frac{\widehat{\dot{\Xiq}}|_{\f=\fd^{\|}}}{\|\Xiq\|}} \frac{\partial\qddothat|_{\f=\fd^{\|}}}{\partial\vL}\nonumber\\
-        &
-        -\Skew{\dir}\Skew{\frac{\|\Xiq\|^2\frac{d}{dt}\LP\widehat{\dot{\Xiq}}|_{\f=\fd^{\|}}\RP_{\text{est}}-\widehat{\dot{\Xiq}}|_{\f=\fd^{\|}}\Xiq[T]\widehat{\dot{\Xiq}}|_{\f=\fd^{\|}}}{\|\Xiq\|^3}}\frac{\partial\dird}{\partial\vL} +\Skew{\dir}\Skew{\dird}\left(-\frac{\Xiq[T]\widehat{\dot{\Xiq}}|_{\f=\fd^{\|}}\frac{\partial\widehat{\dot{\Xiq}}|_{\f=\fd^{\|}}}{\partial\vL}-
-        \widehat{\dot{\Xiq}}|_{\f=\fd^{\|}}\Xiq[T]\frac{\partial\widehat{\dot{\Xiq}}|_{\f=\fd^{\|}}}{\partial\vL}}{\|\Xiq\|^3}\right.\nonumber\\
-        &
-        \left.\frac{\frac{\partial\frac{d}{dt}\LP\widehat{\dot{\Xiq}}|_{\f=\fd^{\|}}\RP_{\text{est}}}{\partial\vL}\|\Xiq\|-\frac{d}{dt}\LP\widehat{\dot{\Xiq}}|_{\f=\fd^{\|}}\RP_{\text{est}}\Xiq[T]\frac{\partial\Xiq}{\partial\vL}}{\|\Xiq\|^2}
-        +\frac{\widehat{\dot{\Xiq}}|_{\f=\fd^{\|}}\LP\|\Xiq\|^3\widehat{\dot{\Xiq}}|_{\f=\fd^{\|}}\trs\frac{\partial\Xiq}{\partial\vL}-3\|\Xiq\|\Xiq[T]\widehat{\dot{\Xiq}}|_{\f=\fd^{\|}}\Xiq[T]\frac{\partial\Xiq}{\partial\vL}\RP}{\|\Xiq\|^6}\right),
-    \end{align}
-	%
-	and, at last,
-	%
-    \begin{align}
-        \frac{\partial\zwdothat|_{\f=\fd^{\|}}}{\partial\wL}=&-\Skew{\wL}\frac{\partial\dirdot}{\partial\wL}+\Skew{\dirdot}-\frac{k_q}{h_q}(\dir\dird[T]-\dird\dir[T])\frac{\partial\dirdot}{\partial\wL}
-        +\frac{k_q}{h_q}\Skew{\dir}\Skew{\dird}\frac{\partial\dirdot}{\partial\wL} + \frac{\|\Xiq\|\epsilon}{h_{q}\mT}\left((\dir{\bf e}\trs-{\bf e}\dir[T])\frac{\partial\dirdot}{\partial\wL}\right. \nonumber\\
-        &\left.-\Skew{\dir}\Skew{\bf e}\frac{\partial\dirdot}{\partial\wL}\right)+\frac{\dird\widehat{\dot{\Xiq}}|_{\f=\fd^{\|}}\trs-\widehat{\dot{\Xiq}}|_{\f=\fd^{\|}}\dird[T]}{\|\Xiq\|}\frac{\partial\dirdot}{\partial\wL}
-        +\frac{1}{\|\Xiq\|}\Skew{\dir}\Skew{\dird}\frac{\partial\frac{d}{dt}\LP\widehat{\dot{\Xiq}}|_{\f=\fd^{\|}}\RP_{\text{est}}}{\partial\wL},
-    \end{align}
-	
-	Other important partial derivatives used in the derivations are the following:
-	%
-	\begin{equation}
-		\frac{\partial\fd}{\partial\vL} = \minus\dir\dir[T]\frac{\partial\Xiq}{\partial\vL} + \mQ\ellp\Skew[2]{\dir}\left(\frac{\partial\zwdothat|_{\f=\fd^{\|}}}{\partial\vL} + \frac{h_q}{h_{\omega}}\frac{\partial\dird}{\partial\vL}\right),
-	\end{equation}
-	%
-	\begin{equation}
-		\frac{\partial\fd}{\partial\wL}=2\mQ\ellp\dir\wL[T]{\bf I}+\mQ\ellp\Skew[2]{\dir}
-	\LP\frac{\partial\zwdothat|_{\f=\fd^{\|}}}{\partial\wL}+\frac{k_{\omega}}{h_{\omega}}\Skew{\dir}\RP,
-	\end{equation}
-	%
-	\begin{equation}
-		\frac{\partial\rzd}{\partial\wL} = \minus\frac{\|\fd\|{\bf I} - \frac{1}{\|\fd\|}\fd\fd[T]}{\|\fd\|^2}\frac{\partial\fd}{\partial\wL},
-	\end{equation}
-	%
-	and
-	%
-	\begin{equation}
-		\frac{\partial\rzd}{\partial\vL} = \minus\frac{\|\fd\|{\bf I}-\frac{1}{\|\fd\|}\fd\fd[T]}{\|\fd\|^2}\frac{\partial\fd}{\partial\vL}.
-	\end{equation}
+%	%
+%	and, finally,
+%	%
+%	\begin{equation}
+%		\frac{\partial\qddothat|_{\f=\fd^{\|}}}{\partial\vL} = \frac{1}{\|\Xiq\|}\LP\dird\dot{\Xiq}|_{\f=\fd^{\|}}^{\trs}-\dot{\Xiq}|_{\f=\fd^{\|}}\dird[T]\RP\frac{\partial\dird}{\partial\vL}
+%		-\frac{\Skew[2]{\dird}\dot{\Xiq}|_{\f=\fd^{\|}}\Xiq[T]\frac{\partial\Xiq}{\partial\vL}}{\|\Xiq\|^3} +\frac{\Skew[2]{\dird} \frac{\partial\dot{\Xiq}|_{\f=\fd^{\|}}}{\partial\vL}}{\|\Xiq\|}.
+%		\label{eq:partial_qd_vL}
+%	\end{equation}
+%
+%	In the following we present some useful partial derivatives of the Lyapunov function candidates with respect to $\vL$ and $\wL$.
+%	They are given by
+%	%
+%	\begin{equation}
+%		\frac{\partial V_3}{\partial\vL} = {\bf e}\trs\frac{\partial{\bf e}}{\partial\vL} -  h_{q}\zdir[T]\frac{\partial\dird}{\partial\vL},
+%		\label{eq:partial_V3_vL}
+%	\end{equation}
+%	%
+%	\begin{equation}
+%		\frac{\partial V_4}{\partial\vL} = \frac{\partial V_3}{\partial\vL} + h_{\omega}\zw[T]\frac{\partial\zw}{\partial\vL},
+%		\label{eq:partial_V4_vL}
+%	\end{equation}
+%	%
+%	\begin{equation}
+%		\frac{\partial V_5}{\partial\vL} =\frac{\partial V_4}{\partial\vL} - h_{r}\rzd[T]\RotM\Skew{\ez}\RotM[T]\Skew{\rzd}\frac{\partial\rzd}{\partial\vL} ,
+%		\label{eq:partial_V5_vL}
+%	\end{equation}
+%	%
+%	and
+%	%
+%	\begin{equation}
+%		\frac{\partial V_5}{\partial\wL} = h_{\omega}\zw[T]\frac{\partial\zw}{\partial\wL}- h_{r}\rzd[T]\RotM\Skew{\ez}\RotM[T]\Skew{\rzd}\frac{\partial\rzd}{\partial\wL}, 
+%		\label{eq:partial_V5_wL}
+%	\end{equation}
+%	%
+%	where
+%	%
+%	\begin{equation}
+%		\frac{\partial\zw}{\partial\wL} = \Skew{\dir},
+%	\end{equation}
+%	%
+%	\begin{equation}
+%		\frac{\partial\dirdot}{\partial\wL} = \minus\Skew{\dir},
+%	\end{equation}
+%	%
+%	\begin{equation}
+%		\frac{\partial\frac{d}{dt}\LP\zvdothatdot|_{\f=\fd^{\|}}\RP_{\text{est}}}{\partial\wL} = \minus\frac{1}{\mT}\LP\dir[T]\Xiq+\dir\Xiq[T]\RP\frac{\partial\dirdot}{\partial\wL},
+%	\end{equation}
+%	%
+%	\begin{equation}
+%		\frac{\partial\frac{d}{dt}\LP\zvdothatdot|_{\f=\fd^{\|}}\RP_{\text{est}}}{\partial\vL} = \minus\frac{(\dirdot\dir[T]+\dir\dirdot[T])\frac{\partial\Xiq}{\partial\vL}+\dir\dir[T]\frac{\partial\widehat{\dot{\Xiq}}|_{\f=\fd^{\|}}}{\partial\vL}}{\mT},
+%	\end{equation}
+%	%
+%	\begin{equation}
+%		\frac{\partial\frac{d}{dt}\LP\widehat{\dot{\bs{\zeta}}}|_{\f=\fd^{\|}}\RP_{\text{est}}}{\partial\wL} = \epsilon(\v{K}_\v{p} + \v{K}_\v{v} )\frac{\partial\frac{d}{dt}\LP\zvdothatdot|_{\f=\fd^{\|}}\RP_{\text{est}}}{\partial\wL},
+%	\end{equation}
+%	%
+%	\begin{equation}
+%		\frac{\partial\frac{d}{dt}\LP\widehat{\dot{\bs{\zeta}}}|_{\f=\fd^{\|}}\RP_{\text{est}}}{\partial\vL} = \epsilon^2( {\bf I} + {\bf K_v}{\bf K_p})\frac{\partial\zvdothat|_{\f=\fd^{\|}}}{\partial\vL} + \epsilon( {\bf K_p} + {\bf K_v} )\frac{\partial\frac{d}{dt}\LP\zvdothatdot|_{\f=\fd^{\|}}\RP_{\text{est}}}{\partial\vL},
+%	\end{equation}
+%	%
+%	\begin{equation}
+%		\frac{\partial\frac{d}{dt}\LP\widehat{\dot{\Xiq}}|_{\f=\fd^{\|}}\RP_{\text{est}}}{\partial\wL} = \mT\frac{\partial\frac{d}{dt}\LP\widehat{\dot{\bs{\zeta}}}|_{\f=\fd^{\|}}\RP_{\text{est}}}{\partial\wL},
+%	\end{equation}
+%	%
+%	\begin{equation}
+%		\frac{\partial\frac{d}{dt}\LP\widehat{\dot{\Xiq}}|_{\f=\fd^{\|}}\RP_{\text{est}}}{\partial\vL} = \mT\frac{\partial\frac{d}{dt}\LP\widehat{\dot{\bs{\zeta}}}|_{\f=\fd^{\|}}\RP_{\text{est}}}{\partial\vL},
+%	\end{equation}
+%
+%    \begin{align}
+%        \frac{\partial\zwdothat|_{\f=\fd^{\|}}}{\partial\vL}&=-\frac{k_q}{h_q}\left(\LSB\Skew{\dirdot}\Skew{\dir}+\Skew{\dir}\Skew{\dirdot}\RSB\frac{\partial\dird}{\partial\vL}
+%        +\Skew[2]{\dir}\frac{\partial\qddothat|_{\f=\fd^{\|}}}{\partial\vL}\right)-\Skew{\dirdot}\Skew{\frac{\widehat{\dot{\Xiq}}|_{\f=\fd^{\|}}}{\|\Xiq\|}}\frac{\partial\dird}{\partial\vL} \nonumber\\
+%        &
+%        +\frac{\Skew{\dirdot}\Skew{\dird}+\Skew{\dir}\Skew{\qddothat|_{\f=\f_d^{\|}}}}{\|\Xiq\|}\LP\frac{\partial\widehat{\dot{\Xiq}}|_{\f=\fd^{\|}}}{\partial\vL}-\frac{\widehat{\dot{\Xiq}}|_{\f=\fd^{\|}}\Xiq[T]\frac{\partial\Xiq}{\partial\vL}}{\|\Xiq\|^2}\RP -\Skew{\dir}\Skew{\frac{\widehat{\dot{\Xiq}}|_{\f=\fd^{\|}}}{\|\Xiq\|}} \frac{\partial\qddothat|_{\f=\fd^{\|}}}{\partial\vL}\nonumber\\
+%        &
+%        -\Skew{\dir}\Skew{\frac{\|\Xiq\|^2\frac{d}{dt}\LP\widehat{\dot{\Xiq}}|_{\f=\fd^{\|}}\RP_{\text{est}}-\widehat{\dot{\Xiq}}|_{\f=\fd^{\|}}\Xiq[T]\widehat{\dot{\Xiq}}|_{\f=\fd^{\|}}}{\|\Xiq\|^3}}\frac{\partial\dird}{\partial\vL} +\Skew{\dir}\Skew{\dird}\left(-\frac{\Xiq[T]\widehat{\dot{\Xiq}}|_{\f=\fd^{\|}}\frac{\partial\widehat{\dot{\Xiq}}|_{\f=\fd^{\|}}}{\partial\vL}-
+%        \widehat{\dot{\Xiq}}|_{\f=\fd^{\|}}\Xiq[T]\frac{\partial\widehat{\dot{\Xiq}}|_{\f=\fd^{\|}}}{\partial\vL}}{\|\Xiq\|^3}\right.\nonumber\\
+%        &
+%        \left.\frac{\frac{\partial\frac{d}{dt}\LP\widehat{\dot{\Xiq}}|_{\f=\fd^{\|}}\RP_{\text{est}}}{\partial\vL}\|\Xiq\|-\frac{d}{dt}\LP\widehat{\dot{\Xiq}}|_{\f=\fd^{\|}}\RP_{\text{est}}\Xiq[T]\frac{\partial\Xiq}{\partial\vL}}{\|\Xiq\|^2}
+%        +\frac{\widehat{\dot{\Xiq}}|_{\f=\fd^{\|}}\LP\|\Xiq\|^3\widehat{\dot{\Xiq}}|_{\f=\fd^{\|}}\trs\frac{\partial\Xiq}{\partial\vL}-3\|\Xiq\|\Xiq[T]\widehat{\dot{\Xiq}}|_{\f=\fd^{\|}}\Xiq[T]\frac{\partial\Xiq}{\partial\vL}\RP}{\|\Xiq\|^6}\right),
+%    \end{align}
+%	%
+%	and, at last,
+%	%
+%    \begin{align}
+%        \frac{\partial\zwdothat|_{\f=\fd^{\|}}}{\partial\wL}=&-\Skew{\wL}\frac{\partial\dirdot}{\partial\wL}+\Skew{\dirdot}-\frac{k_q}{h_q}(\dir\dird[T]-\dird\dir[T])\frac{\partial\dirdot}{\partial\wL}
+%        +\frac{k_q}{h_q}\Skew{\dir}\Skew{\dird}\frac{\partial\dirdot}{\partial\wL} + \frac{\|\Xiq\|\epsilon}{h_{q}\mT}\left((\dir{\bf e}\trs-{\bf e}\dir[T])\frac{\partial\dirdot}{\partial\wL}\right. \nonumber\\
+%        &\left.-\Skew{\dir}\Skew{\bf e}\frac{\partial\dirdot}{\partial\wL}\right)+\frac{\dird\widehat{\dot{\Xiq}}|_{\f=\fd^{\|}}\trs-\widehat{\dot{\Xiq}}|_{\f=\fd^{\|}}\dird[T]}{\|\Xiq\|}\frac{\partial\dirdot}{\partial\wL}
+%        +\frac{1}{\|\Xiq\|}\Skew{\dir}\Skew{\dird}\frac{\partial\frac{d}{dt}\LP\widehat{\dot{\Xiq}}|_{\f=\fd^{\|}}\RP_{\text{est}}}{\partial\wL},
+%    \end{align}
+%	
+%	Other important partial derivatives used in the derivations are the following:
+%	%
+%	\begin{equation}
+%		\frac{\partial\fd}{\partial\vL} = \minus\dir\dir[T]\frac{\partial\Xiq}{\partial\vL} + \mQ\ellp\Skew[2]{\dir}\left(\frac{\partial\zwdothat|_{\f=\fd^{\|}}}{\partial\vL} + \frac{h_q}{h_{\omega}}\frac{\partial\dird}{\partial\vL}\right),
+%	\end{equation}
+%	%
+%	\begin{equation}
+%		\frac{\partial\fd}{\partial\wL}=2\mQ\ellp\dir\wL[T]{\bf I}+\mQ\ellp\Skew[2]{\dir}
+%	\LP\frac{\partial\zwdothat|_{\f=\fd^{\|}}}{\partial\wL}+\frac{k_{\omega}}{h_{\omega}}\Skew{\dir}\RP,
+%	\end{equation}
+%	%
+%	\begin{equation}
+%		\frac{\partial\rzd}{\partial\wL} = \minus\frac{\|\fd\|{\bf I} - \frac{1}{\|\fd\|}\fd\fd[T]}{\|\fd\|^2}\frac{\partial\fd}{\partial\wL},
+%	\end{equation}
+%	%
+%	and
+%	%
+%	\begin{equation}
+%		\frac{\partial\rzd}{\partial\vL} = \minus\frac{\|\fd\|{\bf I}-\frac{1}{\|\fd\|}\fd\fd[T]}{\|\fd\|^2}\frac{\partial\fd}{\partial\vL}.
+%	\end{equation}
 	
 	We also need to compute the pseudo-estimate of $\rzddot$, which is given by
 	% 
@@ -547,10 +599,10 @@ and $\frac{\partial \Xiq}{\partial \vL}:=\mT{\bf K_v}$.
 
 \section{Estimation Errors Associated term}
 
-Baesd on auxiliary calculation in Section~\ref{sec:aux_notation}, the estimation related terms $\widetilde{W_1}$ in (25),  $\widetilde{W_2}$ in (27), $\widetilde{W_3}$ in (28) and $\widetilde{W_4}$ in (34) are expressed by
+Based on auxiliary calculation in Section~\ref{sec:aux_notation}, the estimation related terms $\Psi_1$ in (25),  $\Psi_2$ in (27), $\Psi_3$ in (28) and $\Psi_4$ in (34) are expressed by
 %
 \begin{equation}
-	\widetilde{W_1}:=\frac{\partial V_1}{\partial \vL}\LP\widetilde{\f_v}^{\|} + \frac{\mQ\ellp}{\mT}\widetilde{\f_q}^{\|} + \frac{1}{\mT}\LP\frac{\partial\Xiq}{\partial\zv}\RP^{\|}\vLtilde\RP \in \mathbb{R},
+	\Psi_1:=\frac{\partial V_1}{\partial \vL}\LP\widetilde{\f_v}^{\|} + \frac{\mQ\ellp}{\mT}\widetilde{\f_q}^{\|} + \frac{1}{\mT}\LP\frac{\partial\Xiq}{\partial\vL}\RP^{\|}\vLtilde\RP \in \mathbb{R},
 \end{equation}
 %By exploiting the proposed KF, exchange the unmeasured linear velocity $\vL$ in \eqref{eq:zv} with estimation value which is obtained from \eqref{def:x_hat} as
 %$\zv = \zvhat + \vLtilde$,
@@ -565,17 +617,17 @@ Baesd on auxiliary calculation in Section~\ref{sec:aux_notation}, the estimation
 %where $\partial V_2/\partial \f_v=\frac{\partial V_1\trs}{\partial \vL}\dir\dir[T]$, $\partial V_2/\partial \f_q:=\mQ\ellp/\mT{\bf e}\trs\dir\dir[T]$ and $\partial V_2/\partial \zv:=1/\mT{\bf e}\trs\dir\dir[T]\partial \Xiq/\partial \zv$.
 %
 \begin{align}
-	\widetilde{W_2} := \widetilde{W_1} - \frac{h_\v{q}}{\|\Xiq\|}\dir[T]\Skew[2]{\dird}  \frac{\partial \Xiq}{\partial \vL}\LP\widetilde{\f_v} 
+	\Psi_2 := \Psi_1 - \frac{h_\v{q}}{\|\Xiq\|}\dir[T]\Skew[2]{\dird}  \frac{\partial \Xiq}{\partial \vL}\LP\widetilde{\f_v} 
 	+ \frac{\mQ\ellp}{\mT}\widetilde{\f_q} \RP^{\|}\in\mathbb{R},
 \end{align}
 %
 \begin{align}
-	\widetilde{W_3} := \widetilde{W_2} + h_{\bs\varpi}\zc[T]\LP\widetilde{\f_q} - \LP\dot{\bs{\varpi_d}} - \widehat{\dot{\bs{\varpi_d}}}\RP -  \frac{h_\v{q}}{h_{\bs{\varpi}}}\LP\dird-\qdhat
+	\Psi_3 := \Psi_2 + h_{\bs\varpi}\zc[T]\LP\widetilde{\f_q} - \LP\dot{\bs{\varpi_d}} - \widehat{\dot{\bs{\varpi_d}}}|_{\f=\f_d^{\|}}\RP -  \frac{h_\v{q}}{h_{\bs{\varpi}}}\LP\dird-\qdhat
 	\RP + \frac{k_{\bs{\varpi}}}{h_{\bs{\varpi}}}\LP\zc-\zchat\RP\RP\in\mathbb{R},~\text{and}
 \end{align}
 %
 \begin{align}
-	\widetilde{W_4}:=\widetilde{W_3} + h_\v{r}\rzd\trs \RotM\Skew{\ez}\LP
+	\Psi_4:=\Psi_3 + h_\v{r}\rzd\trs \RotM\Skew{\ez}\LP
 	\vphantom{\LP\frac{\partial V_4}{\partial\vL}\dir\RP\trs}
 	-\RotM[T]\Skew{\rzd}(\rzddot-\widehat{\rzddot})
 	-\frac{T_d}{h_\v{r}\mT}\Skew{\ez}\RotM[T](\bs{\delta}_2\trs-\widehat{\bs{\delta}_2}\trs)^{\|}
@@ -583,9 +635,85 @@ Baesd on auxiliary calculation in Section~\ref{sec:aux_notation}, the estimation
 \end{align}
 %
 , respectively.
+
+Using Young's inequality, $\Psi_1$ can be rewritten as
+% 
+\begin{equation}
+	\begin{aligned}
+	\Psi_1=\frac{\partial V_1}{\partial \vL}\LP\widetilde{\f_v}^{\|} + \frac{\mQ\ellp}{\mT}\widetilde{\f_q}^{\|} + \frac{1}{\mT}\LP\frac{\partial\Xiq}{\partial\vL}\RP^{\|}\vLtilde\RP&\leq \frac{\gamma_1}{2}(\beta\zp[T]+\zv[T])(\beta\zp+\zv) + \frac{1}{2\gamma_1}\delta_{\Psi_1}\\
+	&\leq \frac{\gamma_1}{2} \beta^2\|\zp\|^2 +\frac{\gamma_1}{2}\|\zv\|^2 + \frac{1}{2\gamma_1}\delta_{\Psi_1}
+    \end{aligned}
+\end{equation}
+%
+where $\gamma_1>0$ and $\delta_{\Psi_1}:=\left\|\widetilde{\f_v}^{\|} + \frac{\mQ\ellp}{\mT}\widetilde{\f_q}^{\|} + \frac{1}{\mT}\LP\frac{\partial\Xiq}{\partial\vL}\RP^{\|}\vLtilde\right\|^2$. 
+According to Section~\ref{sec:x_tilde}, $\widetilde{\bs{x}}$ is bounded, hence $\vLtilde$, $\widetilde{\bs{\varpi}}$, $\widetilde{\f_v}$ and $\widetilde{\f_q}$ are also bounded. 
+In this case, $\delta_{\Psi_1}$ is bounded as well.
+
+Then using Young's inequality, $\Psi_2$ can be rewritten as
+%
+\begin{equation}
+	\begin{aligned}
+		\Psi_2=\Psi_1 - \frac{h_\v{q}}{\|\Xiq\|}\dir[T]\Skew[2]{\dird}  \frac{\partial \Xiq}{\partial \vL}\LP\widetilde{\f_v} 
+		+ \frac{\mQ\ellp}{\mT}\widetilde{\f_q} \RP^{\|}&\leq \Psi_1 + \frac{\gamma_2}{2}(\frac{h_\v{q}}{\|\Xiq\|}\dir[T]\Skew[2]{\dird})\trs
+		(\frac{h_\v{q}}{\|\Xiq\|}\dir[T]\Skew[2]{\dird}) + \frac{1}{2\gamma_2}\delta_{\Psi_2}\\
+		&\leq \Psi_1 + \frac{\gamma_2}{2} \frac{h_\v{q}}{\|\Xiq\|^2} +\frac{\gamma_2}{2}\|\dir[T]\Skew[2]{\dird}\|^2 + \frac{1}{2\gamma_2}\delta_{\Psi_2}
+	\end{aligned}
+\end{equation}
+% 
+where $\gamma_2>0$ and $\delta_{\Psi_2}:=\left\|\frac{\partial \Xiq}{\partial \vL}\LP\widetilde{\f_v} 
++ \frac{\mQ\ellp}{\mT}\widetilde{\f_q} \RP^{\|}\right\|^2$. 
+According to $\widetilde{\f_v}$ and $\widetilde{\f_q}$ are bounded, $\delta_{\Psi_2}$ is bounded.
+
+Using Young's inequality for $\Psi_3$, it can be formulated as
+%
+\begin{equation}
+	\begin{aligned}
+		\Psi_3=\Psi_2 + h_{\bs\varpi}\zc[T]\LP\widetilde{\f_q} - \LP\dot{\bs{\varpi_d}} - \widehat{\dot{\bs{\varpi_d}}}|_{\f=\f_d^{\|}}\RP -  \frac{h_\v{q}}{h_{\bs{\varpi}}}\LP\dird-\qdhat
+		\RP + \frac{k_{\bs{\varpi}}}{h_{\bs{\varpi}}}\LP\zc-\zchat\RP\RP
+		\leq \Psi_2 + \frac{\gamma_3}{2} \|\zc\|^2 + \frac{1}{2\gamma_3}\delta_{\Psi_3}
+	\end{aligned}
+\end{equation}
+%
+where $\gamma_3>0$ and $\delta_{\Psi_3}:=\left\|\widetilde{\f_q} - \LP\dot{\bs{\varpi_d}} - \widehat{\dot{\bs{\varpi_d}}}|_{\f=\f_d^{\|}}\RP -  \frac{h_\v{q}}{h_{\bs{\varpi}}}\LP\dird-\qdhat
+\RP + \frac{k_{\bs{\varpi}}}{h_{\bs{\varpi}}}\LP\zc-\zchat\RP\right\|^2$. 
+Due to $\vLtilde$ is bounded, then $\Xiq-\widehat{\Xiq}$ and $\dird-\qdhat$ are bounded.
+Then based on the reference trajectory described in Section \uppercase\expandafter{\romannumeral4} \cite{2024_Yang_TIE} are bounded by construction, $\dot{\Xiq}|_{\f=\fd^{\|}}-\widehat{\dot{\Xiq}}|_{\f=\fd^{\|}}$, $\qddot|_{\f=\f_d^{\|}}-\qddothat|_{\f=\f_d^{\|}}$ and $\frac{d}{dt}\LP\widehat{\dot{\Xiq}}|_{\f=\fd^{\|}}\RP|_{\f=\fd^{\|}}-\frac{d}{dt}\LP\widehat{\dot{\Xiq}}|_{\f=\fd^{\|}}\RP_{\text{est}}|_{\f=\fd^{\|}}$ are bounded. 
+Moreover, on account of $\widetilde{\bs{x}}$ is bounded, $\dot{\bs{\varpi_d}} - \widehat{\dot{\bs{\varpi_d}}}|_{\f=\f_d^{\|}}$ and $\zc-\zchat$ are bounded.
+In this case, $\delta_{\Psi_3}$ is bounded.
+
+%Using Young's inequality, $\Psi_4$ is restricted as
+%%
+%\begin{equation}
+%	\begin{aligned}
+%		\Psi_4&=\Psi_3 + h_\v{r}\rzd\trs \RotM\Skew{\ez}\LP
+%		\vphantom{\LP\frac{\partial V_4}{\partial\vL}\dir\RP\trs}
+%		-\RotM[T]\Skew{\rzd}(\rzddot-\widehat{\rzddot})
+%		-\frac{T_d}{h_\v{r}\mT}\Skew{\ez}\RotM[T](\bs{\delta}_2\trs-\widehat{\bs{\delta}_2}\trs)^{\|}
+%		+\frac{h_{\bs\varpi}}{h_\v{r}}\frac{T_d}{\mQ\ellp}\Skew{\ez}\RotM[T](\zc-\widehat{\zc})^{\perp}\RP\\
+%		&\leq \Psi_3 + \frac{\gamma_4}{2} \|\zc\|^2 + \frac{1}{2\gamma_4}\delta_{\Psi_4}
+%	\end{aligned}
+%\end{equation}
+%%
+%where $\gamma_4>0$ and $\delta_{\Psi_4}:=$. 
+Similarly, $\rzddot-\widehat{\rzddot}$ and $\bs{\delta}_2\trs-\widehat{\bs{\delta}_2}\trs$ are also bounded.
+Due to Rotation matrix $\RotM$ property and, $\rz$ and $\rzd$ are unit vector, $\delta_{\Psi_4}:=h_\v{r}\rzd\trs \RotM\Skew{\ez}\LP
+\vphantom{\LP\frac{\partial V_4}{\partial\vL}\dir\RP\trs}
+-\RotM[T]\Skew{\rzd}(\rzddot-\widehat{\rzddot})
+-\frac{T_d}{h_\v{r}\mT}\Skew{\ez}\RotM[T](\bs{\delta}_2\trs-\widehat{\bs{\delta}_2}\trs)^{\|}
++\frac{h_{\bs\varpi}}{h_\v{r}}\frac{T_d}{\mQ\ellp}\Skew{\ez}\RotM[T](\zc-\widehat{\zc})^{\perp}\RP$ is bounded as well.
+And all of the estimation error related term that remained in time derivative of Lyapunov function $V_4$ is introduced as
+%
+\begin{equation}
+	\delta_{V_4} := \delta_{\Psi_1} + \delta_{\Psi_2} + \delta_{\Psi_3} + \delta_{\Psi_4}.
+\end{equation}
+%
+In turn, the boundedness of $\delta_{V_4}$ is confirmed.
+
 \begin{thebibliography}{9}
-\bibitem{2023_Yang_Automatica}
-Yang, W., Yu, G., Reis, J. and Silvestre, C. Robust Nonlinear 3D Control of an Inverted Pendulum Balanced on a Quadrotor. {\em Automatica}. pp. 1-12 (2023)
+\bibitem{2024_Yang_TIE}
+Yang, W., Reis, J., Yu, G. and Silvestre, C. Nonlinear Output Feedback Control of an Underactuated Inverted Pendulum. {\em IEEE Transactions on Industrial Electronics}. pp. 1-8 (2024)
+\bibitem{2002_Khalil}
+Khalil, H. K.. Pearson education, Nonlinear systems (3rd ed.). Upper Saddle River, New Jersey: Prentice Hall. (2002)
 \end{thebibliography}
 
 \end{document}
